@@ -13,8 +13,6 @@ CRGB leds[NUM_LEDS];
 String BuffCommands;
 byte commandBuffer[5];
 
-
-
 void setup()
 {
 
@@ -46,10 +44,6 @@ void loop()
 	BuffCommands = "";
 	Serial.println(commands);
 	}
-
-
-
-
 
 	Serial.flush();
 	*/

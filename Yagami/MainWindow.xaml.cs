@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -23,9 +24,12 @@ namespace Yagami
 	public partial class MainWindow : Window
 	{
 		SerialPort serialPort = new SerialPort("COM5");
+		System.Windows.Controls.Primitives.ToggleButton tb = new ToggleButton();
 		public MainWindow()
 		{
 			InitializeComponent();
+			initButtonbar();
+			Buttonbar(60);
 
 			if (serialPort is SerialPort)
 			{
@@ -49,11 +53,14 @@ namespace Yagami
 				}// end CATCH portion of TRY/CATCH block
 			}// end IF serialPort is viable
 
+
+
+			
 		}
-		
+
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			string[] buffVals = "" //set this to buffer of values
+			string[] buffVals = "".Split(';'); //set this to buffer of values
 			int[] vals = Array.ConvertAll<string, int>(buffVals, int.Parse);
 			string command = "";
 
@@ -73,5 +80,46 @@ namespace Yagami
 			Debug.WriteLine(indata.ToString());
 
 		}
+
+		public void initButtonbar()
+		{
+			RowDefinition gridRow = new RowDefinition();
+			gridRow.Name = "Led";
+			DynamicGrid.RowDefinitions.Add(gridRow);
+		}
+
+		public void Buttonbar(int bar)
+		{
+
+			DynamicGrid.ColumnDefinitions.Clear();
+			//DynamicGrid.Width = 21;
+
+			for (int x = 0; x < bar; x++)
+			{
+				ColumnDefinition gridCol = new ColumnDefinition();
+				gridCol.Name = "Column" + x.ToString();
+				DynamicGrid.ColumnDefinitions.Add(gridCol);
+				int count = 1;
+				Button MyControl1 = new Button();
+				MyControl1.Content = count.ToString();
+				MyControl1.Name = "Button" + count.ToString();
+
+				Grid.SetColumn(MyControl1, x);
+				Grid.SetRow(MyControl1, 1);
+				DynamicGrid.Children.Add(MyControl1);
+
+				count++;
+
+				tb.VerticalAlignment = VerticalAlignment.Stretch;
+				tb.HorizontalAlignment = HorizontalAlignment.Stretch;
+				Grid.SetColumn(tb, x);
+				Grid.SetRow(tb, 1);
+					
+			}
+		}
+
 	}
+
+
 }
+
